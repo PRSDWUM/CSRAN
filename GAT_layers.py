@@ -15,24 +15,24 @@ class GraphAttentionLayer(nn.Module):
         self.out_features = out_features
         self.alpha = alpha
         self.concat = concat
-        # torch.empty用来返回一个没有初始化的tensor，  nn.Parameter可以看作是一个类型转换函数，将一个不可训练的类型 Tensor 转换成可以训练的类型 parameter
+        
         self.W = nn.Parameter(torch.empty(size=(in_features, out_features)))
         nn.init.xavier_uniform_(self.W.data, gain=1.414)
         self.a = nn.Parameter(torch.empty(size=(2*out_features, 1)))
         nn.init.xavier_uniform_(self.a.data, gain=1.414)
 
         self.leakyrelu = nn.LeakyReLU(self.alpha)
-# # 需保留的版本
+# 
 #     def forward(self, h, adj, split_name):
 #         Wh = torch.mm(h, self.W) # h.shape: (N, in_features), Wh.shape: (N, out_features)
 #         e = self._prepare_attentional_mechanism_input(Wh)
-#         # 生成与e同大小的全1矩阵，然后*-9e15，是一个全部很小的负数
+#         
 #         zero_vec = -9e15*torch.ones_like(e)
 #         zero = torch.ones_like(e)-1
 #         if split_name.startswith("train"):
 #             thre = 0
 #             attention = torch.where(adj > thre, e, zero_vec)
-#             #查看邻接矩阵，矩阵有值的地方取e的值，矩阵=<0的地方取统一的-9e15
+#             
 
 #         else:
 #             thre = 0.4
@@ -52,12 +52,12 @@ class GraphAttentionLayer(nn.Module):
     def forward(self, h, adj, split_name):
         Wh = torch.mm(h, self.W) # h.shape: (N, in_features), Wh.shape: (N, out_features)
         e = self._prepare_attentional_mechanism_input(Wh)
-        # 生成与e同大小的全1矩阵，然后*-9e15，是一个全部很小的负数
+        
         zero_vec = -9e15*torch.ones_like(e)
         zero = torch.ones_like(e)-1
 #         if split_name.startswith("train"):
 #             attention = torch.where(adj > 0, e, zero_vec)
-#             # 查看邻接矩阵，矩阵有值的地方取e的值，矩阵=<0的地方取统一的-9e15
+#             
 
 #         else:
 #             attention = e
