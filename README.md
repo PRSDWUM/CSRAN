@@ -12,3 +12,4 @@ We recommended the following dependencies:
 Download the dataset files. We use the dataset files created by SCAN Kuang-Huei Lee.
 # Training new models
 To train Flickr30K and MS-COCO models:
+<br> python train.py
