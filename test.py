@@ -5,8 +5,8 @@ import argparse
 
 
 def test_main(opt):
-    print('--------------验证集测试已结束------------:')
-    print('--------------Test 真正开始--------------:')
+    print('--------------test begin------------:')
+    print('--------------Test begin--------------:')
     
     test_flag = input('go into the test system(y or n):')
     if (test_flag == 'y'):
