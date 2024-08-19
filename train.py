@@ -177,7 +177,7 @@ def main():
         
 
     print('--------------------------------------------:')
-    print('--------------evaluation gegin--------------:')
+    print('--------------finally_test------------------:')
     test_flag = input('go into the test system(y or n):')
     if (test_flag == 'y'):
         ensemble_flag = input('evaluation ensemble or single(y or n):')
