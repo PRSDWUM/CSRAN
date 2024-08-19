@@ -5,10 +5,7 @@
 # Kuang-Huei Lee, Xi Chen, Gang Hua, Houdong Hu, Xiaodong He
 #
 # Writen by Kuang-Huei Lee, 2018
-# 注意，对于 MSCOCO 而言，若测试集包含 5,000 张图像，一般设置两种测试方式：
 
-# MSCOCO1K，即将5000张图像划分为5部分，分别包含1000张图像，最终测试结果为在5个测试集结果的平均值。
-# MSCOCO5K，直接对5000张图像进行测试
 # ---------------------------------------------------------------
 """Evaluation"""
 
@@ -172,23 +169,7 @@ def evalrank(model_path, data_path=None, split='dev', fold5=False):
     
     
     
-#     #下面为tsne需要代码--1008
-#     #-------------------------------------------------------------
-#     print('tsne原始数据形状为：')
-#     print(img_embs.shape)
-#     print(cap_embs.shape)
-#     image_tsne = image_embs.view(opt.batch_size, 36, -1).sum(dim=2)
-#     cap_tsne = cap_embs.view(opt.batch_size, cap_len[0], -1).sum(dim=2)
-#     print('tsne测试')
-#     print(image_tsne.shape)
-#     print(cap_tsne.shape)
-#     with open('coco-features.txt','a') as f:
-#         for item in image_tsne:
-#             print(item, end='\n', file=f)
-#         for item in cap_tsne:
-#             print(item, end='\n', file=f)
-#     print('coco的特征以被保存，以一张图像为单位')
-#     #-------------------------------------------------------------
+
     
     
     
@@ -311,7 +292,7 @@ def evaluation_ensemble(model_path, model_path2, data_path=None, split='dev', fo
 
         start = time.time()
         
-        # # 原版方案一
+        #
         # if opt.cross_attn == 't2i':
         #     sims = shard_xattn_t2i(img_embs, cap_embs, cap_lens, opt, shard_size=128)
         #     sims2 = shard_xattn_t2i(img_embs2, cap_embs2, cap_lens2, opt2, shard_size=128)
@@ -321,7 +302,7 @@ def evaluation_ensemble(model_path, model_path2, data_path=None, split='dev', fo
         # else:
         #     raise NotImplementedError
             
-        # 改进方案二
+        # 
         sims = shard_xattn_i2t(img_embs, cap_embs, cap_lens, opt, shard_size=128)
         sims2 = shard_xattn_t2i(img_embs2, cap_embs2, cap_lens2, opt2, shard_size=128)
         
@@ -355,7 +336,7 @@ def evaluation_ensemble(model_path, model_path2, data_path=None, split='dev', fo
             cap_lens_shard2 = cap_lens2[i * 5000:(i + 1) * 5000]
 
             start = time.time()
-# 原版方案一：           
+#          
 #             if opt.cross_attn == 't2i':
 #                 sims = shard_xattn_t2i(img_embs_shard, cap_embs_shard, cap_lens_shard, opt, shard_size=128)
 #                 sims2 = shard_xattn_t2i(img_embs_shard2, cap_embs_shard2, cap_lens_shard2, opt2, shard_size=128)
@@ -365,7 +346,7 @@ def evaluation_ensemble(model_path, model_path2, data_path=None, split='dev', fo
 #             else:
 #                 raise NotImplementedError
             
-            # 改进方案二
+            # 
             sims = shard_xattn_i2t(img_embs_shard, cap_embs_shard, cap_lens_shard, opt, shard_size=128)
             sims2 = shard_xattn_t2i(img_embs_shard2, cap_embs_shard2, cap_lens_shard2, opt2, shard_size=128)
             
