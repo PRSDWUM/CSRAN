@@ -22,33 +22,30 @@ import torch.nn.functional as F
 def normalize_adj(mx):
     """Row-normalize sparse matrix"""
     rowsum = torch.sum(mx,dim=1)
-    # np.array:创建数组对象
-    # mx.sum(1):按行相加
-    # mx进行按行相加，并产生数组对象
+
     r_inv_sqrt = rowsum.pow(-0.5).flatten(0)
-    # np.power(rowsum, -0.5)：求rowsum元素的-0.5次方
-    # flatten: 变为一维数组
+   
     r_inv_sqrt[torch.isinf(r_inv_sqrt)] = 0.
-    # np.isinf(r_inv_sqrt):判断r_inv_sqrt是否为正负无穷，如果是则返回True，对应元素设置为0
+    
     r_mat_inv_sqrt = torch.diag(r_inv_sqrt)
-    # sp.diags()函数根据给定的对象创建对角矩阵,对角线上的元素为给定对象中的元素
+    
     result = torch.matmul(mx,r_mat_inv_sqrt).t()
     return torch.matmul(result,r_mat_inv_sqrt)
-    # 完成D-1/2*A*D-1/2操作
+    
 
 
 def normalize_features(mx):
     """Row-normalize sparse matrix"""
     rowsum = torch.sum(mx,dim=1)
-    # mx按行相加，并产生数组对象
+    
     r_inv = rowsum.pow(-1).flatten(0)
-    # 取上述结果的-1次方，然后变为一维数组
+    
     r_inv[torch.isinf(r_inv)] = 0.
-    # 如果里面有正负无穷，则设置为0
+    
     r_mat_inv = torch.diag(r_inv)
-    # 生成以r_inv为对角线的对角矩阵
+    
     mx = torch.matmul(r_mat_inv,mx)
-    # 将原来的数值乘以上面的r_mat_inv，进行归一化处理
+   
     return mx
 
 
@@ -94,7 +91,7 @@ class EncoderImagePrecomp(nn.Module):
         self.init_weights()
 
     def init_weights(self):
-        """Xavier initialization for the fully connected layer，一种权重初始化的手段,使得输入、输出的方差保持不变,这就是Xavier初始化做的事
+        """Xavier initialization for the fully connected layer，
         """
         r = np.sqrt(6.) / np.sqrt(self.fc.in_features +
                                   self.fc.out_features)
@@ -181,7 +178,7 @@ class EncoderText(nn.Module):
         """Handles variable size captions
         """
         x = self.fc(x)
-        packed = pack_padded_sequence(x, lengths, batch_first=True) # 压缩操作
+        packed = pack_padded_sequence(x, lengths, batch_first=True) # 
         out, _ = self.rnn(packed)
         padded = pad_packed_sequence(out, batch_first=True)
         cap_emb, cap_len = padded
@@ -493,14 +490,14 @@ class SCAN(object):
             self.adj = torch.zeros([batch_size*(36+cap_lens[0]),batch_size*(36+cap_lens[0])])
             if opt.train_dev_log.startswith("train"):
 
-            #     # 图像区域赋值
+            #     # 
                 # for i in range(batch_size):
                 #     self.adj[i*36:(i+1)*36,i*36:(i+1)*36] = 1
-                # 文本区域赋值
+                # 
                 start_index = batch_size*36
                 # for j in range(batch_size):
                 #     self.adj[start_index+j*cap_lens[0]:start_index+j*cap_lens[0]+cap_lens[j],start_index+j*cap_lens[0]:start_index+j*cap_lens[0]+cap_lens[j]] = 1
-#                 # # 图像与文本区域赋值
+#                 # #
 
                 for k in range(batch_size):
                     self.adj[k*36:(k+1)*36,start_index+k*cap_lens[0]:start_index+k*cap_lens[0]+cap_lens[k]] = 1
