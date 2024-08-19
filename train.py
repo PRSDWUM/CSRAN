@@ -86,7 +86,7 @@ def main():
                         help='Attention softmax temperature.')
     parser.add_argument('--bert_to_gru_size', default=300, type=int, help='bert_to_gru_size')
     parser.add_argument('--drop_out', default=0.5, type=float, help='drop_out')
-    # 后面我可能没有使用
+    # 
     parser.add_argument('--GAT_lr', type=float, default=0.0002, help='Initial learning rate.')
     parser.add_argument('--GAT_weight_decay', type=float, default=5e-4, help='Weight decay (L2 loss on parameters).')
     parser.add_argument('--GAT_nclass', type=int, default=1024, help='Number of output class.')
@@ -110,10 +110,10 @@ def main():
     logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
     tb_logger.configure(opt.logger_name, flush_secs=5)
 
-    print('开始进行加载数据')
+    print('loading')
     train_loader, val_loader = data.get_loaders(
         opt.data_name, opt.batch_size, opt.workers, opt)
-    print('主程序所有数据集加载完毕')
+    print('load done')
 
     model = SCAN(opt)
 
@@ -175,10 +175,9 @@ def main():
         
     
         
-    # 这里需要增加test模块吗？还是说不增加也可以，因为GLFN和SCAN都没有，即实现finally_test(opt)
-    # 但是缺少两个方向结合的，i2t和t2i结合的，在我保存的那些网页中有代码，拿过来接入就可以了
-    print('--------------验证集测试已结束------------:')
-    print('--------------Test 真正开始--------------:')
+
+    print('--------------------------------------------:')
+    print('--------------evaluation gegin--------------:')
     test_flag = input('go into the test system(y or n):')
     if (test_flag == 'y'):
         ensemble_flag = input('evaluation ensemble or single(y or n):')
@@ -196,7 +195,7 @@ def main():
             fold5 = fold5
             evaluation_ensemble.evalrank(model1_path, model2_path, data_path, split, fold5)
         else:
-            #单向模型验证
+            #
             prefix = opt.model_name + '/'
             model_path = prefix + 'model_best_{}_GAT_'.format(mode_name) + '.pth.tar'
             data_path = os.path.join(opt.data_path, opt.data_name)
