@@ -28,7 +28,7 @@ def test_main(opt):
             fold5 = fold5
             evaluation_ensemble(model1_path, model2_path, data_path, split, fold5)
         else:
-            #单向模型验证
+            #
             model_name = opt.cross_attn
             prefix = opt.model_name + '/'
             model_path = prefix + 'model_best_{}_GAT_'.format(model_name) + '.pth.tar'
