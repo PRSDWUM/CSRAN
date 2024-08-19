@@ -12,4 +12,4 @@ We recommended the following dependencies:
 Download the dataset files. We use the dataset files created by SCAN([Stacked cross attention for image-text matching by Kuang-Huei Lee](https://github.com/kuanghuei/SCAN)) .
 # Training new models
 To train Flickr30K and MS-COCO models:
-<br> python train.py
+<br>* python train.py
