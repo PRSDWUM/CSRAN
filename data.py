@@ -27,19 +27,19 @@ class PrecompDataset(data.Dataset):
             with open(file_name, 'rb') as f:
                 for line in f:
                     self.captions.append(line.strip())
-        print('当前加载数据路径为'+loc+data_split)
+        print('path:'+loc+data_split)
         if self.data_split.startswith("train"):
             self.length = len(self.captions)
             self.images = np.load(loc + data_split +'_ims.npy')
             
-            print(data_split +'中图片的长度')
+            print(data_split +'length')
             print(len(self.images))
         else:
             self.length = len(self.captions)
 
             self.images = np.load(loc + data_split + '_ims.npy')
             self.images = self.images[::5,:,:]
-            # 因为dev和test数据集中的image都是图片5张重复的，而train中，都是单张的，后期改为如果是train则进行直接载入，若不是train则进行隔5进行取值，所有image的比例是1:1：5的比例
+            # 
         print('load '+ data_split +'_image done')
 
 
@@ -47,7 +47,7 @@ class PrecompDataset(data.Dataset):
         if data_split.startswith("train"):
             value = np.load(loc + data_split + '_captions.npz',allow_pickle=True)
             self.captions = value['arr_0']
-            print('bert进行处理后的caption的长度')
+            print('after bert, the length of caption:')
             print(len(self.captions))
             print('load ' + data_split + '_caption done')
         
@@ -89,7 +89,7 @@ class PrecompDataset(data.Dataset):
         
         
         
-#         #下面为tsne需要代码--1008
+#         #
 #         #-------------------------------------------------------------
 #         if data_split.startswith("test"):
             
