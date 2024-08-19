@@ -5,7 +5,7 @@ import argparse
 
 
 def test_main(opt):
-    print('--------------test begin------------:')
+    print('--------------------------------------:')
     print('--------------Test begin--------------:')
     
     test_flag = input('go into the test system(y or n):')
